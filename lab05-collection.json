@@ -1,0 +1,141 @@
+{
+	"info": {
+		"_postman_id": "1b8b0054-6a32-4eaf-a3ff-d8decf75a7a1",
+		"name": "Lab05 - API System Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44610676",
+		"_collection_link": "https://oyuko-223532.postman.co/workspace/oyuko's-Workspace~850029fe-50b7-4235-8115-ab2d17928de7/collection/44610676-1b8b0054-6a32-4eaf-a3ff-d8decf75a7a1?action=share&source=collection_link&creator=44610676"
+	},
+	"item": [
+		{
+			"name": "Setup - Active Student",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"status\": \"active\",\r\n  \"coursesTaken\": [\"CS201\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/students/B231234567",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"students",
+						"B231234567"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Setup - Course CS313",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"prerequisites\": [\"CS201\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/courses/CS313",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"courses",
+						"CS313"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register - Happy Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Result is OK\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.result).to.eql(\"OK\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"studentID\": \"B231234567\",\r\n  \"courseID\": \"CS313\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/registrations",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"registrations"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": ""
+		}
+	]
+}
