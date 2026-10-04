@@ -1,0 +1,111 @@
+newman
+
+Lab05 - API System Test
+
+❏ 01 - Happy Path
+↳ Setup - Active Student
+  PUT http://localhost:3000/students/B231234567 [200 OK, 178B, 22ms]
+
+↳ Setup - Course CS313
+  PUT http://localhost:3000/courses/CS313 [200 OK, 178B, 3ms]
+
+↳ Register - Happy Path
+  POST http://localhost:3000/registrations [201 Created, 202B, 2ms]
+  1. Status code is 200
+  ✓  Result is OK
+
+❏ 02 - Student Not Found
+↳ Setup - Student Not Found Course
+  PUT http://localhost:3000/courses/CS313 [200 OK, 178B, 2ms]
+
+↳ Test - Student Not Found
+  POST http://localhost:3000/registrations [200 OK, 192B, 2ms]
+  ✓  Status code is 200
+  ✓  Result is ERROR_NO_STUDENT
+
+❏ 03 - Inactive Student
+↳ Setup - Inactive Student
+  PUT http://localhost:3000/students/B239999998 [200 OK, 178B, 2ms]
+
+↳ Setup - Inactive Student Course
+  PUT http://localhost:3000/courses/CS313 [200 OK, 178B, 2ms]
+
+↳ Test - Inactive Student
+  POST http://localhost:3000/registrations [200 OK, 198B, 2ms]
+  ✓  Status code is 200
+  ✓  Result is ERROR_INACTIVE_STUDENT
+
+❏ 04 - Course Not Found
+↳ Setup - Course Not Found Student
+  PUT http://localhost:3000/students/B239999997 [200 OK, 178B, 3ms]
+
+↳ Test - Course Not Found
+  POST http://localhost:3000/registrations [200 OK, 191B, 2ms]
+  ✓  Status code is 200
+  ✓  Result is ERROR_NO_COURSE
+
+❏ 05 - Prerequisites Missing
+↳ Setup - Prerequisite Student
+  PUT http://localhost:3000/students/B239999996 [200 OK, 178B, 2ms]
+
+↳ Setup - Course CS314
+  PUT http://localhost:3000/courses/CS314 [200 OK, 178B, 2ms]
+
+↳ Test - Prerequisites Missing
+  POST http://localhost:3000/registrations [200 OK, 215B, 3ms]
+  ✓  Status code is 200
+  ✓  Result is ERROR_PREREQUISITES
+
+❏ 06 - Missing Student ID
+↳ Test - Missing Student ID
+  POST http://localhost:3000/registrations [400 Bad Request, 202B, 2ms]
+  ✓  Status code is 400
+  ✓  Result is ERROR_BAD_REQUEST
+
+❏ 07 - Double Error
+↳ Setup - Double Error Student
+  PUT http://localhost:3000/students/B239999995 [200 OK, 178B, 1ms]
+
+↳ Test - Inactive Student and Missing Course
+  POST http://localhost:3000/registrations [200 OK, 198B, 2ms]
+  ✓  Status code is 200
+  ✓  Inactive student takes precedence
+
+❏ 08 - No Prerequisites
+↳ Setup - No Prerequisites Student
+  PUT http://localhost:3000/students/B239999994 [200 OK, 178B, 2ms]
+
+↳ Setup - Course CS315
+  PUT http://localhost:3000/courses/CS315 [200 OK, 178B, 3ms]
+
+↳ Test - No Prerequisites
+  POST http://localhost:3000/registrations [201 Created, 202B, 2ms]
+  ✓  Status code is 201
+  ✓  Result is OK
+
+┌─────────────────────────┬─────────────────┬─────────────────┐
+│                         │        executed │          failed │
+├─────────────────────────┼─────────────────┼─────────────────┤
+│              iterations │               1 │               0 │
+├─────────────────────────┼─────────────────┼─────────────────┤
+│                requests │              19 │               0 │
+├─────────────────────────┼─────────────────┼─────────────────┤
+│            test-scripts │              27 │               0 │
+├─────────────────────────┼─────────────────┼─────────────────┤
+│      prerequest-scripts │              19 │               0 │
+├─────────────────────────┼─────────────────┼─────────────────┤
+│              assertions │              16 │               1 │
+├─────────────────────────┴─────────────────┴─────────────────┤
+│ total run duration: 434ms                                   │
+├─────────────────────────────────────────────────────────────┤
+│ total data received: 442B (approx)                          │
+├─────────────────────────────────────────────────────────────┤
+│ average response time: 3ms [min: 1ms, max: 22ms, s.d.: 4ms] │
+└─────────────────────────────────────────────────────────────┘
+
+[31m  # [39m[31m failure        [39m[31m detail                                                [39m
+[90m    [39m[90m                [39m[90m                                                       [39m
+ 1.  AssertionError  Status code is 200                                    
+                     expected response to have status code 200 but got 201 
+                     at assertion:0 in test-script                         
+                     inside "01 - Happy Path / Register - Happy Path"      
