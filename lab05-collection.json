@@ -8,104 +8,709 @@
 	},
 	"item": [
 		{
-			"name": "Setup - Active Student",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"status\": \"active\",\r\n  \"coursesTaken\": [\"CS201\"]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseUrl}}/students/B231234567",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"students",
-						"B231234567"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Setup - Course CS313",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"prerequisites\": [\"CS201\"]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseUrl}}/courses/CS313",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"courses",
-						"CS313"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Register - Happy Path",
-			"event": [
+			"name": "01 - Happy Path",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 201\", function () {\r",
-							"    pm.response.to.have.status(201);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Result is OK\", function () {\r",
-							"    const jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.result).to.eql(\"OK\");\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {},
-						"requests": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"studentID\": \"B231234567\",\r\n  \"courseID\": \"CS313\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "Setup - Active Student",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"status\": \"active\",\r\n  \"coursesTaken\": [\"CS201\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/students/B231234567",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"students",
+								"B231234567"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{baseUrl}}/registrations",
-					"host": [
-						"{{baseUrl}}"
+				{
+					"name": "Setup - Course CS313",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"prerequisites\": [\"CS201\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/courses/CS313",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"courses",
+								"CS313"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register - Happy Path",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Result is OK\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.result).to.eql(\"OK\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
 					],
-					"path": [
-						"registrations"
-					]
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"studentID\": \"B231234567\",\r\n  \"courseID\": \"CS313\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/registrations",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"registrations"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "02 - Student Not Found",
+			"item": [
+				{
+					"name": "Setup - Student Not Found Course",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"prerequisites\": []\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/courses/CS313",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"courses",
+								"CS313"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test - Student Not Found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Result is ERROR_NO_STUDENT\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.result).to.eql(\"ERROR_NO_STUDENT\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"studentID\": \"B239999999\",\r\n  \"courseID\": \"CS313\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/registrations",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"registrations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "03 - Inactive Student",
+			"item": [
+				{
+					"name": "Setup - Inactive Student",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"status\": \"inactive\",\r\n  \"coursesTaken\": [\"CS201\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/students/B239999998",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"students",
+								"B239999998"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Setup - Inactive Student Course",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"prerequisites\": []\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/courses/CS313",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"courses",
+								"CS313"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test - Inactive Student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Result is ERROR_INACTIVE_STUDENT\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.result).to.eql(\"ERROR_INACTIVE_STUDENT\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"studentID\": \"B239999998\",\r\n  \"courseID\": \"CS313\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/registrations",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"registrations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "04 - Course Not Found",
+			"item": [
+				{
+					"name": "Setup - Course Not Found Student",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"status\": \"active\",\r\n  \"coursesTaken\": []\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/students/B239999997",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"students",
+								"B239999997"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test - Course Not Found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Result is ERROR_NO_COURSE\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.result).to.eql(\"ERROR_NO_COURSE\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"studentID\": \"B239999997\",\r\n  \"courseID\": \"CS999\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/registrations",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"registrations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "05 - Prerequisites Missing",
+			"item": [
+				{
+					"name": "Setup - Prerequisite Student",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"status\": \"active\",\r\n  \"coursesTaken\": []\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/students/B239999996",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"students",
+								"B239999996"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Setup - Course CS314",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"prerequisites\": [\"CS201\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/courses/CS314",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"courses",
+								"CS314"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test - Prerequisites Missing",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Result is ERROR_PREREQUISITES\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.result).to.eql(\"ERROR_PREREQUISITES\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"studentID\": \"B239999996\",\r\n  \"courseID\": \"CS314\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/registrations",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"registrations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "06 - Missing Student ID",
+			"item": [
+				{
+					"name": "Test - Missing Student ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Result is ERROR_BAD_REQUEST\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.result).to.eql(\"ERROR_BAD_REQUEST\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"courseID\": \"CS313\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/registrations",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"registrations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "07 - Double Error",
+			"item": [
+				{
+					"name": "Setup - Double Error Student",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"status\": \"inactive\",\r\n  \"coursesTaken\": []\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/students/B239999995",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"students",
+								"B239999995"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test - Inactive Student and Missing Course",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Inactive student takes precedence\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.result).to.eql(\"ERROR_INACTIVE_STUDENT\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"studentID\": \"B239999995\",\r\n  \"courseID\": \"CS999\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/registrations",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"registrations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "08 - No Prerequisites",
+			"item": [
+				{
+					"name": "Setup - No Prerequisites Student",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"status\": \"active\",\r\n  \"coursesTaken\": []\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/students/B239999994",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"students",
+								"B239999994"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Setup - Course CS315",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"prerequisites\": []\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/courses/CS315",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"courses",
+								"CS315"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test - No Prerequisites",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Result is OK\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.result).to.eql(\"OK\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"studentID\": \"B239999994\",\r\n  \"courseID\": \"CS315\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/registrations",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"registrations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
