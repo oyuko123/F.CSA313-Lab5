@@ -71,13 +71,19 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
+									"pm.test(\"Status code is 201\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
 									"pm.test(\"Result is OK\", function () {\r",
 									"    const jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData.result).to.eql(\"OK\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Registration ID exists and is numeric\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.registrationID).to.exist;\r",
+									"    pm.expect(jsonData.registrationID).to.be.a(\"number\");\r",
 									"});"
 								],
 								"type": "text/javascript",
@@ -678,6 +684,12 @@
 									"pm.test(\"Result is OK\", function () {\r",
 									"    const jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData.result).to.eql(\"OK\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Registration ID exists and is numeric\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.registrationID).to.exist;\r",
+									"    pm.expect(jsonData.registrationID).to.be.a(\"number\");\r",
 									"});"
 								],
 								"type": "text/javascript",
@@ -705,6 +717,56 @@
 							],
 							"path": [
 								"registrations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "09 - Public API - JSONPlaceholder",
+			"item": [
+				{
+					"name": "GET - Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is an array\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"First user's name is correct\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0].name).to.eql(\"Leanne Graham\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/users",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"users"
 							]
 						}
 					},
